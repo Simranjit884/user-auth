@@ -9,10 +9,23 @@ const AuthForm = () => {
     setIsLogin((prevState) => !prevState);
   };
 
+  const onSubmitHandler = (event) => {
+    event.preventDefault();
+
+    fetch('', {
+      method: 'POST',
+      body: JSON.stringify({
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+  }
+
   return (
     <section className={classes.auth}>
       <h1>{isLogin ? 'Login' : 'Sign Up'}</h1>
-      <form>
+      <form onSubmit={onSubmitHandler}>
         <div className={classes.control}>
           <label htmlFor='email'>Your Email</label>
           <input type='email' id='email' required />
