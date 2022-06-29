@@ -14,11 +14,11 @@ const AuthForm = () => {
   const onSubmitHandler = (event) => {
     event.preventDefault();
 
-    fetch("AIzaSyCTpLpC1-TQb_RLvQhJWd1Uk5CX5mCsRnA", {
+    fetch("https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCTpLpC1-TQb_RLvQhJWd1Uk5CX5mCsRnA", {
       method: "POST",
       body: JSON.stringify({
-        email: emailInputRef,
-        password: passwordInputRef,
+        email: emailInputRef.current.value,
+        password: passwordInputRef.current.value,
         returnSecureToken: true,
       }),
       headers: {
@@ -28,8 +28,12 @@ const AuthForm = () => {
       if (res.ok) {
         console.log(res);
       } else {
-        res.json().then((error) => {
-          console.log(error);
+        return res.json().then((data) => {
+          let errorMessage = "Authentication failed!";
+          if (data && data.error && data.error.message) {
+            errorMessage = data.error.message;
+          }
+          alert(errorMessage);
         });
       }
     });
