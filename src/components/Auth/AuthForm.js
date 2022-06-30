@@ -4,6 +4,8 @@ import classes from "./AuthForm.module.css";
 
 const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
 
@@ -14,29 +16,37 @@ const AuthForm = () => {
   const onSubmitHandler = (event) => {
     event.preventDefault();
 
-    fetch("https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCTpLpC1-TQb_RLvQhJWd1Uk5CX5mCsRnA", {
-      method: "POST",
-      body: JSON.stringify({
-        email: emailInputRef.current.value,
-        password: passwordInputRef.current.value,
-        returnSecureToken: true,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }).then((res) => {
-      if (res.ok) {
-        console.log(res);
-      } else {
-        return res.json().then((data) => {
-          let errorMessage = "Authentication failed!";
-          if (data && data.error && data.error.message) {
-            errorMessage = data.error.message;
-          }
-          alert(errorMessage);
-        });
-      }
-    });
+    setIsLoading(true);
+    if (isLogin) {
+    } else {
+      fetch(
+        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCTpLpC1-TQb_RLvQhJWd1Uk5CX5mCsRnA",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            email: emailInputRef.current.value,
+            password: passwordInputRef.current.value,
+            returnSecureToken: true,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      ).then((res) => {
+        setIsLoading(false);
+        if (res.ok) {
+          console.log(res);
+        } else {
+          return res.json().then((data) => {
+            let errorMessage = "Authentication failed!";
+            if (data && data.error && data.error.message) {
+              errorMessage = data.error.message;
+            }
+            alert(errorMessage);
+          });
+        }
+      });
+    }
   };
 
   return (
@@ -49,7 +59,12 @@ const AuthForm = () => {
         </div>
         <div className={classes.control}>
           <label htmlFor="password">Your Password</label>
-          <input type="password" id="password" ref={passwordInputRef} required />
+          <input
+            type="password"
+            id="password"
+            ref={passwordInputRef}
+            required
+          />
         </div>
         <div className={classes.actions}>
           <button>{isLogin ? "Login" : "Create Account"}</button>
