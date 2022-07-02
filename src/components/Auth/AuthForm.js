@@ -15,8 +15,6 @@ const AuthForm = () => {
     setIsLogin((prevState) => !prevState);
   };
 
-  const onLoginHangler = () => {};
-
   const onSubmitHandler = (event) => {
     event.preventDefault();
 
@@ -55,8 +53,8 @@ const AuthForm = () => {
         }
       })
       .then((data) => {
+        console.log('-------',data);
         authCtxt.login(data.idToken);
-        // console.log(data);
       })
       .catch((error) => {
         alert(error.message);
