@@ -19,7 +19,7 @@ const ProfileForm = () => {
         body: JSON.stringify({
           idToken: authCtxt.token,
           password: enteredNewPasswordd,
-          returnSecureToken: true,
+          returnSecureToken: false,
         }),
         headers: {
           "Content-Type": "application/json",
